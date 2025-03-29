@@ -16,3 +16,57 @@ G_undirected = G_directed.to_undirected()
 
 largest_cc = max(nx.connected_components(G_undirected), key=len)
 G_lcc = G_undirected.subgraph(largest_cc).copy()
+
+# 1.2: Compute centralities and generate histograms
+degree_centrality = nx.degree_centrality(G_lcc)
+closeness_centrality = nx.closeness_centrality(G_lcc)
+betweenness_centrality = nx.betweenness_centrality(G_lcc)
+
+# save the histogram
+plt.figure(figsize=(8, 6))
+plt.hist(list(degree_centrality.values()), bins=50, edgecolor='black')
+plt.title('Degree Centrality Histogram')
+plt.xlabel('Degree Centrality')
+plt.ylabel('Frequency')
+plt.savefig("degree_centrality_hist.png")
+plt.clf()
+
+# save histogram for closeness ask
+plt.figure(figsize=(8, 6))
+plt.hist(list(closeness_centrality.values()), bins=50, edgecolor='black')
+plt.title('Closeness Centrality Histogram')
+plt.xlabel('Closeness Centrality')
+plt.ylabel('Frequency')
+plt.savefig("closeness_centrality_hist.png")
+plt.clf()
+
+# save Histogram for Betweenness Centrality
+plt.figure(figsize=(8, 6))
+plt.hist(list(betweenness_centrality.values()), bins=50, edgecolor='black')
+plt.title('Betweenness Centrality Histogram')
+plt.xlabel('Betweenness Centrality')
+plt.ylabel('Frequency')
+plt.savefig("betweenness_centrality_hist.png")
+plt.clf()
+
+# 1.3: Analysis for the top 200 nodes by degree centrality
+# Identify the top 200 nodes based on degree centrality
+top_nodes = sorted(degree_centrality.items(), key=lambda x: x[1], reverse=True)[:200]
+top_node_ids = [node for node, _ in top_nodes]
+
+# extracting closeness
+top_closeness = [closeness_centrality[node] for node in top_node_ids]
+top_betweenness = [betweenness_centrality[node] for node in top_node_ids]
+
+# calculating mean median and std
+closeness_mean = np.mean(top_closeness)
+closeness_median = np.median(top_closeness)
+closeness_std = np.std(top_closeness)
+
+betweenness_mean = np.mean(top_betweenness)
+betweenness_median = np.median(top_betweenness)
+betweenness_std = np.std(top_betweenness)
+
+print("Top 200 nodes centrality statistics:")
+print(f"Closeness Centrality - Mean: {closeness_mean:.4f}, Median: {closeness_median:.4f}, Std: {closeness_std:.4f}")
+print(f"Betweenness Centrality - Mean: {betweenness_mean:.4f}, Median: {betweenness_median:.4f}, Std: {betweenness_std:.4f}")
