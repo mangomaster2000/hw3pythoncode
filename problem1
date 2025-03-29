@@ -1,0 +1,8 @@
+# imports
+import networkx as nx
+import matplotlib
+# headless? hpc is tech headless right?
+matplotlib.use('Agg')  
+import matplotlib.pyplot as plt
+import numpy as np
+import gzip
