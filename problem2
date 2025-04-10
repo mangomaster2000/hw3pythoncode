@@ -1,1 +1,16 @@
+# import stuff
+import networkx as nx
+import gzip
 
+# Problem 2: Triadic Census on the Twitter dataset (directed network)
+
+filename = "twitter_combined.txt.gz"
+with gzip.open(filename, 'rt') as f:
+    G_directed = nx.read_edgelist(f, create_using=nx.DiGraph(), nodetype=int)
+
+# find triadic census using NetworkX
+triad_census = nx.triadic_census(G_directed)
+
+print("Triadic Census of the Twitter dataset (directed network):")
+for triad_type, count in triad_census.items():
+    print(f"{triad_type}: {count}")
